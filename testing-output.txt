@@ -1,0 +1,57 @@
+================================================================================
+                        Lab 1 - Test Output Proof
+================================================================================
+
+Tested on: Feb 4, 2026
+
+--------------------------------------------------------------------------------
+SUCCESS CASE (Both services running)
+--------------------------------------------------------------------------------
+
+Command:
+$ curl "http://127.0.0.1:8081/call-echo?msg=hello"
+
+Response:
+{"service_a":{"echo":"hello"},"service_b":"ok"}
+
+HTTP Status: 200 OK
+
+Service A Log:
+2026-02-04 14:29:46,799 service=A endpoint=/echo status=ok latency_ms=0
+127.0.0.1 - - [04/Feb/2026 14:29:46] "GET /echo?msg=hello HTTP/1.1" 200 -
+
+Service B Log:
+2026-02-04 14:29:46,801 service=B endpoint=/call-echo status=ok latency_ms=22
+127.0.0.1 - - [04/Feb/2026 14:29:46] "GET /call-echo?msg=hello HTTP/1.1" 200 -
+
+--------------------------------------------------------------------------------
+FAILURE CASE (Service A stopped)
+--------------------------------------------------------------------------------
+
+Command:
+$ curl "http://127.0.0.1:8081/call-echo?msg=hello"
+
+Response:
+{"error":"HTTPConnectionPool(host='127.0.0.1', port=8080): Max retries exceeded with url: /echo?msg=hello (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=8080): Failed to establish a new connection: [Errno 61] Connection refused\"))","service_a":"unavailable","service_b":"ok"}
+
+HTTP Status: 503 Service Unavailable
+
+Service B Log:
+2026-02-04 14:30:33,278 service=B endpoint=/call-echo status=error error="HTTPConnectionPool(host='127.0.0.1', port=8080): Max retries exceeded with url: /echo?msg=hello (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8080): Failed to establish a new connection: [Errno 61] Connection refused"))" latency_ms=2
+127.0.0.1 - - [04/Feb/2026 14:30:33] "GET /call-echo?msg=hello HTTP/1.1" 503 -
+
+--------------------------------------------------------------------------------
+HEALTH CHECK ENDPOINTS
+--------------------------------------------------------------------------------
+
+Service A Health:
+$ curl "http://127.0.0.1:8080/health"
+{"status":"ok"}
+
+Service B Health:
+$ curl "http://127.0.0.1:8081/health"
+{"status":"ok"}
+
+Service A Echo:
+$ curl "http://127.0.0.1:8080/echo?msg=test123"
+{"echo":"test123"}
