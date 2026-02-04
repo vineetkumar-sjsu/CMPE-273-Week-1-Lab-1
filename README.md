@@ -3,6 +3,7 @@
 Lab Description: Simple distributed system with two services communicating over HTTP done using flask and requests module.
 
 **Name:** Vineet Kumar
+
 **Email:** vineet.kumar@sjsu.edu
 
 ## How to Run Locally
