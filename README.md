@@ -74,8 +74,6 @@ Service B logs:
 
 This system is distributed because the two services run as separate processes on different ports and communicate over the network using HTTP. Neither service shares memory with the other - they have to explicitly send messages (HTTP requests) to communicate. Service B has no way to know if Service A is up or down except by trying to call it and handling the response or error. This is a fundamental property of distributed systems: each component is independent and can fail without directly crashing the others. When Service A goes down, Service B keeps running and gracefully returns an error to the client instead of dying.
 
-## Q&A
-
 ### What happens on timeout?
 
 Service B sets a 1-second timeout when calling Service A (`timeout=1.0` in the requests call). If Service A takes longer than 1 second to respond, the requests library raises a `ReadTimeout` exception. The except block catches this and returns a 503 with the error message. This prevents Service B from hanging forever waiting for a slow or unresponsive Service A.
