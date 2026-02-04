@@ -1,9 +1,9 @@
 # Python HTTP Track - Week 1 Lab 1
 
-Simple distributed system with two services communicating over HTTP.
+Lab Description: Simple distributed system with two services communicating over HTTP done using flask and requests module.
 
-Name: Vineet Kumar
-Email: vineet.kumar@sjsu.edu
+**Name:** Vineet Kumar
+**Email:** vineet.kumar@sjsu.edu
 
 ## How to Run Locally
 
